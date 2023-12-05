@@ -5,9 +5,9 @@ import { Navbar } from '@/components/Navbar';
 
 const EventsPage = () => {
   const eventId = window.location.href.split('/').pop();
-  const getEventInfo = (type, id) => {
-    //axios.get(`http://localhost:3000/api/events/${id}`)
-  }
+  // const getEventInfo = (type, id) => {
+  //   //axios.get(`http://localhost:3000/api/events/${id}`)
+  // }
   return (
     <>
       <header>
