@@ -8,7 +8,7 @@ const EventsPage = () => {
   const [events, setEvents] = useState([]);
 
   const handleEventData = async () => {
-    const response = await axios.get('https://legendary-invention-45xwwgw4wvrfjxjv-3000.app.github.dev/api/events')
+    const response = await axios.get('/api/events')
     console.log(response);
     setEvents(response.data);
   }
