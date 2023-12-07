@@ -1,30 +1,28 @@
-'use client'
-import React from 'react'
-//import { axios } from 'axios';
-import { Navbar } from '@/components/Navbar';
+import { Navbar } from "@/components/Navbar";
+import React from "react";
+import Image from "next/image";
 
-const EventsPage = () => {
-  const eventId = window.location.href.split('/').pop();
-  // const getEventInfo = (type, id) => {
-  //   //axios.get(`http://localhost:3000/api/events/${id}`)
-  // }
+const page = ({ params }) => {
   return (
     <>
       <header>
         <Navbar />
       </header>
       <main>
-        <section>
-          <h1>Event</h1>
-          <p>Event ID: {eventId}</p>
-          
-        </section>
+        <h1 className="text-4xl font-bold text-center text-white">
+          <span className="text-blue-500">Master</span>
+          <span className="text-yellow-400">Class</span>
+        </h1>
+        <h3 className="text-2xl font-bold text-center text-white">
+          Producción Musical
+        </h3>
+        <div className="collaborators">
+          <img src="/logo.png" alt="laligadelamusica42_logo" />
+          <img src="/42logo.png" alt="42school_logo" />
+        </div>
       </main>
-      <footer>
-
-      </footer>
     </>
-  )
-}
+  );
+};
 
-export default EventsPage
+export default page;

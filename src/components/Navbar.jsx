@@ -1,4 +1,7 @@
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { FaGithub } from "react-icons/fa";
 
 export const Navbar = () => {
   return (
@@ -26,51 +29,39 @@ export const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Item 1</a>
+              <Link href={`/`}>Inicio</Link>
             </li>
             <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
+              <Link href={`/events`}>
+                Eventos
+                <span className="ml-2 badge badge-primary">New</span>
+              </Link>
             </li>
             <li>
-              <a>Item 3</a>
+              <Link href={`/contact`}>Contacto</Link>
             </li>
           </ul>
         </div>
-        <a className="text-xl btn btn-ghost">daisyUI</a>
+        <a className="text-xl"><Image src={`/logo.png`} width={272} height={180} className="w-[75px] h-[45px]" /></a>
       </div>
       <div className="hidden navbar-center lg:flex">
         <ul className="px-1 menu menu-horizontal">
           <li>
-            <a>Item 1</a>
+            <Link href={`/`}>Inicio</Link>
           </li>
           <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
+            <Link href={`/events`}>
+              Eventos
+              <span className="ml-2 badge badge-secondary">New</span>
+            </Link>
           </li>
           <li>
-            <a>Item 3</a>
+            <Link href={`/contact`}>Contacto</Link>
           </li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <a className="btn btn-neutral btn-circle"><FaGithub size={30} /></a>
       </div>
     </div>
   );
