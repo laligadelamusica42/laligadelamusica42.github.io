@@ -13,6 +13,15 @@ const EventsPage = () => {
     setEvents(response.data);
   }
 
+  const redirToVercel = () => {
+    if (window.location.href.includes('onrender.com')) {
+      window.location.href = 'https://laligadelamusica42.vercel.app/events/'
+    }
+  }
+  useEffect(() => {
+    redirToVercel();
+  });
+
   // Call handleEventData when the component mounts
   useEffect(() => {
     handleEventData();

@@ -1,8 +1,20 @@
+"use client"
 import { Navbar } from "@/components/Navbar";
 import React from "react";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const page = ({ params }) => {
+
+  const redirToVercel = () => {
+    if (window.location.href.includes('onrender.com')) {
+      window.location.href = `https://laligadelamusica42.vercel.app/events/${params.id}`
+    }
+  }
+  useEffect(() => {
+    redirToVercel();
+  });
+
   return (
     <>
       <header>
