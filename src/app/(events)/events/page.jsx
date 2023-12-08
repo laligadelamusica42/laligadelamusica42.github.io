@@ -3,10 +3,8 @@ import { Navbar } from '@/components/Navbar'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Card from '@/components/ui/Card';
-import { useRouter } from 'next/router';
 
-const EventsPage = () => {
-  const router = useRouter();
+const Events = () => {
   const [events, setEvents] = useState([]);
 
   const handleEventData = async () => {
@@ -25,7 +23,7 @@ const EventsPage = () => {
     if (process.env.NODE_ENV === 'development') {
       console.log('dev');
     } else if (process.env.NODE_ENV === 'production') {
-      router.replace(`/ondev`);
+      window.location.href = 'https://laligadelamusica42.vercel.app/ondev/'
     }
   }
 
@@ -62,4 +60,4 @@ const EventsPage = () => {
   )
 }
 
-export default EventsPage
+export default Events

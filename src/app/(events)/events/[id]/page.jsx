@@ -18,7 +18,7 @@ const page = ({ params }) => {
     if (process.env.NODE_ENV === 'development') {
       console.log('dev');
     } else if (process.env.NODE_ENV === 'production') {
-      router.replace(`/ondev`);
+      window.location.href = 'https://laligadelamusica42.vercel.app/ondev/'
     }
   }
 
