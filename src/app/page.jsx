@@ -2,10 +2,8 @@
 import { Navbar } from '@/components/Navbar'
 import Image from 'next/image'
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 
 export default function Home() {
-  const router = useRouter();
   const redirToVercel = () => {
     if (window.location.href.includes('onrender.com')) {
       window.location.href = 'https://laligadelamusica42.vercel.app/'
@@ -16,7 +14,7 @@ export default function Home() {
     if (process.env.NODE_ENV === 'development') {
       console.log('dev');
     } else if (process.env.NODE_ENV === 'production') {
-      router.replace(`/ondev`);
+      window.location.href = 'https://laligadelamusica42.vercel.app/ondev/'
     }
   }
 
