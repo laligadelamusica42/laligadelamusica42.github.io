@@ -3,6 +3,7 @@ import { Navbar } from '@/components/Navbar'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Card from '@/components/ui/Card';
+import { useRouter } from 'next/router';
 
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
