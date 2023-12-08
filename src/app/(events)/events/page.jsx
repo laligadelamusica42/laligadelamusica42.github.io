@@ -18,8 +18,18 @@ const EventsPage = () => {
       window.location.href = 'https://laligadelamusica42.vercel.app/events/'
     }
   }
+  
+  const checkIfDev = () => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('dev');
+    } else if (process.env.NODE_ENV === 'production') {
+      router.replace(`/ondev`);
+    }
+  }
+
   useEffect(() => {
     redirToVercel();
+    checkIfDev();
   });
 
   // Call handleEventData when the component mounts

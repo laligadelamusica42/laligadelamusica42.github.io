@@ -3,16 +3,28 @@ import { Navbar } from "@/components/Navbar";
 import React from "react";
 import Image from "next/image";
 import { useEffect } from "react";
+import { useRouter } from 'next/navigation'
 
 const page = ({ params }) => {
-
+  const router = useRouter();
+  
   const redirToVercel = () => {
     if (window.location.href.includes('onrender.com')) {
       window.location.href = `https://laligadelamusica42.vercel.app/events/${params.id}`
     }
   }
+
+  const checkIfDev = () => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('dev');
+    } else if (process.env.NODE_ENV === 'production') {
+      router.replace(`/ondev`);
+    }
+  }
+
   useEffect(() => {
     redirToVercel();
+    checkIfDev();
   });
 
   return (
