@@ -6,6 +6,7 @@ import Card from '@/components/ui/Card';
 import { useRouter } from 'next/router';
 
 const EventsPage = () => {
+  const router = useRouter();
   const [events, setEvents] = useState([]);
 
   const handleEventData = async () => {
