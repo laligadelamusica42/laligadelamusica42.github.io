@@ -15,7 +15,7 @@ export default function Home() {
     if (process.env.NODE_ENV === 'development') {
       console.log('dev');
     } else if (process.env.NODE_ENV === 'production') {
-      window.location.href = 'https://laligadelamusica42.vercel.app/ondev/'
+      // window.location.href = 'https://laligadelamusica42.vercel.app/ondev/'
     }
   }
 
