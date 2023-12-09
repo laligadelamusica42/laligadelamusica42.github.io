@@ -1,18 +1,24 @@
 "use client"
 import { Navbar } from "@/components/Navbar";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useEffect } from "react";
 import { useRouter } from 'next/navigation'
+import axios from 'axios';
 
 const page = ({ params }) => {
-  const router = useRouter();
-  
+  const [events, setEvents] = useState([]);
+
+  const handleEventData = async () => {
+    const response = await axios.get(`/api/events/${params.id}`)
+    setEvents([response.data]);
+  }
+
   const redirToVercel = () => {
     if (window.location.href.includes('onrender.com')) {
       window.location.href = `https://laligadelamusica42.vercel.app/events/${params.id}`
     }
-  }
+  };
 
   const checkIfDev = () => {
     if (process.env.NODE_ENV === 'development') {
@@ -20,12 +26,16 @@ const page = ({ params }) => {
     } else if (process.env.NODE_ENV === 'production') {
       window.location.href = 'https://laligadelamusica42.vercel.app/ondev/'
     }
-  }
+  };
 
   useEffect(() => {
     redirToVercel();
     checkIfDev();
-  });
+  }, []);
+
+  useEffect(() => {
+    handleEventData();
+  }, []);
 
   return (
     <>
@@ -33,17 +43,22 @@ const page = ({ params }) => {
         <Navbar />
       </header>
       <main>
-        <h1 className="text-4xl font-bold text-center text-white">
-          <span className="text-blue-500">Master</span>
-          <span className="text-yellow-400">Class</span>
-        </h1>
-        <h3 className="text-2xl font-bold text-center text-white">
-          Producción Musical
-        </h3>
-        <div className="collaborators">
-          <img src="/logo.png" alt="laligadelamusica42_logo" />
-          <img src="/42logo.png" alt="42school_logo" />
-        </div>
+        {
+          events.map((event, index) => {
+            return (
+              <div className='p-5 m-5' key={index}>
+                <div className='flex flex-col items-center justify-center'>
+                  <div className='flex flex-col items-center justify-center'>
+                    <Image src={event.posterUrl} width={500} height={500} />
+                    <h1 className='text-3xl font-bold'>{event.eventName}</h1>
+                    <p className='text-xl'>{event.eventDescription}</p>
+                    <a href={event.eventUrl} target='_blank' className='text-xl text-blue-600 hover:text-blue-800'>Event Link</a>
+                  </div>
+                </div>
+              </div>
+            )
+          })
+        }
       </main>
     </>
   );

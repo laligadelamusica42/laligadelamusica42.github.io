@@ -3,7 +3,7 @@ import React from "react";
 
 const Card = ({ image_src, event_name, event_desc, event_url }) => {
   const handleCardClick = (event_url) => {
-    console.log(event_url);
+    window.location.href = event_url;
   }
   return (
     <div className="shadow-xl card w-96 bg-base-100">
