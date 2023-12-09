@@ -61,7 +61,7 @@ export const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn btn-neutral btn-circle"><FaGithub size={30} /></a>
+        <a className="btn btn-neutral btn-circle" href="https://github.com/laligadelamusica42"><FaGithub size={30} /></a>
       </div>
     </div>
   );
