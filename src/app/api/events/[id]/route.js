@@ -7,7 +7,7 @@ export async function GET(req) {
 
   try {
     await connectDB();
-    const event = await Event.findOne({ eventId: id });
+    const event = await Event.findOne({ id: id });
     return NextResponse.json(event, { status: 200 });
   } catch (error) {
     return NextResponse.error(error, { status: 500 });

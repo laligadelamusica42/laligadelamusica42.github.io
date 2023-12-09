@@ -8,21 +8,21 @@ const Events = () => {
   const [events, setEvents] = useState([]);
 
   const handleEventData = async () => {
-    const response = await axios.get('/api/events')
+    const response = await axios.get('/api/events');
     setEvents(response.data);
-  }
+  };
 
   const redirToVercel = () => {
     if (window.location.href.includes('onrender.com')) {
-      window.location.href = 'https://laligadelamusica42.vercel.app/events/'
+      window.location.href = 'https://laligadelamusica42.vercel.app/events/';
     }
-  }
-  
+  };
+
   const checkIfDev = () => {
     if (process.env.NODE_ENV === 'development') {
       console.log('dev');
     } else if (process.env.NODE_ENV === 'production') {
-      window.location.href = 'https://laligadelamusica42.vercel.app/ondev/'
+      window.location.href = 'https://laligadelamusica42.vercel.app/ondev/';
     }
   }
 
@@ -41,12 +41,12 @@ const Events = () => {
       <header>
         <Navbar />
       </header>
-      <main>
+      <main className='py-5 mx-auto lg:max-w-8xl'>
         {
           events.map((event, index) => {
             return (
-              <div className='p-5 m-5' key={index}>
-                <Card key={index} image_src={event.posterUrl} event_name={event.eventName} event_desc={event.eventDescription} event_url={`/events/${event.eventId}`} />
+              <div className='flex justify-center w-full h-full mt-10 lg:grid lg:grid-col-2 md:flex md:justify-center md:mt-10 sm:flex sm:justify-center '>
+                <Card key={index} image_src={event.posterUrl} event_name={event.eventName} event_desc={event.eventDescription} event_url={`/events/${event.id}`} />
               </div>
             )
           })
@@ -59,4 +59,4 @@ const Events = () => {
   )
 }
 
-export default Events
+export default Events;
