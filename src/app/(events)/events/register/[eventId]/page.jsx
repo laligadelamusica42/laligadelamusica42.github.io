@@ -2,13 +2,13 @@
 import React, { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { set } from "mongoose";
 
 const page = ({ params }) => {
   const sParams = useSearchParams();
   const router = useRouter();
   const [selectedOption, setSelectedOption] = React.useState('0');
   const [step, setStep] = React.useState(1);
-  const [user, setUser] = React.useState(localStorage.getItem('user'));
 
   const changePage = () => {
     const step = parseInt(sParams.get("step")) || 0;
@@ -25,6 +25,7 @@ const page = ({ params }) => {
     event.preventDefault();
     const formElements = event.target.elements;
     let data;
+    let skills;
 
     if (step === 1) {
       data = {
@@ -37,10 +38,15 @@ const page = ({ params }) => {
       localStorage.setItem('user', JSON.stringify(data));
       setStep(2); // Move to the next step
     } else if (step === 2) {
-      data = {
-        skillsDescription: formElements[1]?.value
+      if (selectedOption === '0' || selectedOption === '2') {
+        setStep(3);
+      } else {
+        skills = {
+          skillsDescription: formElements?.namedItem('skillDescription')?.value
+        }
+        localStorage.setItem('skills', JSON.stringify(skills));
+        setStep(3);
       }
-      setStep(3); // Reset to the first step or navigate to another page
     }
 
     console.log("data:", data);
@@ -52,12 +58,17 @@ const page = ({ params }) => {
   }
 
   useEffect(() => {
-    if (user === null || user === undefined) {
-      router.push(`/events/register/${params.eventId}?step=1`);
-    } else {
-      router.push(`/events/register/${params.eventId}?step=2`);
-    }
-  }, [user]);
+    const user = JSON.parse(localStorage.getItem('user'));
+    const skills = JSON.parse(localStorage.getItem('skills'));
+    // if (user && step === 1) {
+    //   router.push(`/events/register/${params.eventId}?step=2`);
+    //   setStep(2);
+    // }
+    //else if (skills && step === 2) {
+    //  router.push(`/events/register/${params.eventId}?step=3`);
+    //  setStep(3);
+    //}
+  }, []);
 
   const changeStep = (step, hSubmit) => {
     if (step === "1") {
@@ -157,7 +168,7 @@ const page = ({ params }) => {
                     <div className="label">
                       <span className="label-text">¿Cuál?</span>
                     </div>
-                    <textarea name="" id="" disabled={selectedOption === '2' || selectedOption === '0'} cols="30" rows="10" className={`textarea textarea-bordered ${selectedOption === '2' || selectedOption === '0' ? 'textarea-disabled' : ''}`} placeholder="Explicate aquí" required={selectedOption === '1'}></textarea>
+                    <textarea name="skillDescription" id="" disabled={selectedOption === '2' || selectedOption === '0'} cols="30" rows="10" className={`textarea textarea-bordered ${selectedOption === '2' || selectedOption === '0' ? 'textarea-disabled' : ''}`} placeholder="Explicate aquí" required={selectedOption === '1'}></textarea>
                   </label>
                 </div>
                 <br />
@@ -181,6 +192,18 @@ const page = ({ params }) => {
               </h2>
               <p className="mt-10">
                 <span className="text-lg">Hola! <b>{user.name}</b></span> <br />
+                Lo primero, gracias por tu interés en participar en este evento. <br />
+                <br />
+                A continuación te dejamos las instrucciones para que puedas participar en el evento: <br />
+                <br />
+                1. La fecha, hora y lugar se te notificará por correo electrónico (Será el que nos habeis facilitado en el apartado de datos). <br />
+                <br />
+                2. En ese mismo email, te llegará un código QR que deberás presentar en la entrada para poder asistir.
+                <br />
+                <br />
+                3. Una vez terminado el evento, te llegará un email con un formulario de feedback para que nos cuentes tu experiencia (Para ver si podremos repetir este tipo de eventos).
+                <br />
+                <button className="mt-10 btn btn-primary w-80" onClick={() => changePage()}>NEXT</button>
               </p>
             </div>
           </center>
