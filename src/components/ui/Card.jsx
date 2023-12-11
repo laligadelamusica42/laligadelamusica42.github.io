@@ -17,7 +17,7 @@ const Card = ({ image_src, event_name, event_desc, event_url }) => {
         <h2 className="card-title">{event_name}</h2>
         <p>{event_desc}</p>
         <div className="justify-end mt-5 card-actions">
-          <button className="btn btn-primary" onClick={() => handleCardClick(event_url)}>Saber Más...</button>
+          <button className="btn btn-primary" onClick={() => handleCardClick(event_url)}>Registrarme</button>
         </div>
       </div>
     </div>
