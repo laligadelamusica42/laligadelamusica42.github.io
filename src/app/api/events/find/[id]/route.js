@@ -3,7 +3,7 @@ import connectDB from '@/lib/connect'; // Assuming connectDB is in the utils dir
 import { NextResponse } from 'next/server'; // Import NextResponse from next/server
 
 export async function GET(req) {
-  const id = req.url.split('/api/events/')[1];
+  const id = req.url.split('/api/events/find/')[1];
 
   try {
     await connectDB();

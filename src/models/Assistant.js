@@ -18,19 +18,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    events: [{
-        eventId: {
-            type: String
-        },
-        eventName: {
-            type: String
-        },
-        eventDate: {
-            type: Date
-        }
-    }]
+    skills: {
+        type: String,
+        maxlength: 380
+    },
+    eventId: {
+        type: String,
+        required: true
+    },
 });
 
-const User = mongoose.model('User', userSchema);
+const Assistant = mongoose.models.Assistant || mongoose.model('Assistant', userSchema);
 
-export default User || mongoose.models.User;
+export default Assistant;

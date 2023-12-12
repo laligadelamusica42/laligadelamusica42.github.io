@@ -45,7 +45,7 @@ const Events = () => {
         {
           events.map((event, index) => {
             return (
-              <div className='flex justify-center w-full h-full mt-10 lg:grid lg:grid-col-2 md:flex md:justify-center md:mt-10 sm:flex sm:justify-center '>
+              <div key={0} className='flex justify-center w-full h-full mt-10 lg:grid lg:grid-col-2 md:flex md:justify-center md:mt-10 sm:flex sm:justify-center '>
                 <Card key={index} image_src={event.posterUrl} event_name={event.eventName} event_desc={event.eventDescription} event_url={`/events/register/${event.id}?step=1`} />
               </div>
             )

@@ -2,7 +2,8 @@
 import React, { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { set } from "mongoose";
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const page = ({ params }) => {
   const sParams = useSearchParams();
@@ -42,15 +43,73 @@ const page = ({ params }) => {
         setStep(3);
       } else {
         skills = {
-          skillsDescription: formElements?.namedItem('skillDescription')?.value
+          skills: formElements?.namedItem('skillDescription')?.value
         }
         localStorage.setItem('skills', JSON.stringify(skills));
         setStep(3);
       }
     }
-
-    console.log("data:", data);
     changePage();
+  }
+
+  const sendMail = async (uId) => {
+    if (!uId || uId === '') return Promise.reject("No user id found");
+    // Get the assistan data by the uId
+    try {
+      const response = await axios.get(`/api/events/assistants/${uId}`);
+      if (response.status === 200) {
+        const data = response.data;
+        console.log("data:", data);
+        const emailData = {
+          "to": data?.email,
+          "text": `Hola ${data?.fullname}, gracias por registrarte en el evento. En breve recibirás un email con el código QR para poder acceder al evento.`
+        }
+        const emailResponse = await axios.post(`/api/email/${params?.eventId}`, emailData);
+        if (emailResponse.status === 200) {
+          setTimeout(() => {
+            router.push('/events');
+          }, 100);
+        }
+      }
+    } catch (error) {
+      console.log("error:", error);
+      return Promise.reject(error);
+    }
+  }
+
+  const handleRegister = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const skills = JSON.parse(localStorage.getItem('skills'));
+    if (!user || !skills) return Promise.reject("No user or skills found");
+    const eventId = params?.eventId;
+    const userId = uuidv4().toString();
+    const data = {
+      "id": userId,
+      "fullname": `${user?.name} ${user?.lastname}`,
+      "email": user?.email,
+      "intraname": user?.intra,
+      "skills": skills?.skills,
+      eventId
+    }
+    console.log("data:", data);
+    try {
+      const response = await axios.post('/api/events/assistants', data);
+      if (response.status === 200) {
+        console.log("response:", response);
+        if (user || skills) {
+          localStorage.removeItem('user');
+          localStorage.removeItem('skills');
+          // Append user id
+          localStorage.setItem('userId', userId);
+          const uId = localStorage.getItem('userId');
+          // Send email
+          sendMail(uId);
+        }
+
+      }
+    } catch (error) {
+      console.log("error:", error); 
+    }
   }
 
   const getStepStyle = (currentStep, elementStep) => {
@@ -204,6 +263,26 @@ const page = ({ params }) => {
                 3. Una vez terminado el evento, te llegará un email con un formulario de feedback para que nos cuentes tu experiencia (Para ver si podremos repetir este tipo de eventos).
                 <br />
                 <button className="mt-10 btn btn-primary w-80" onClick={() => changePage()}>NEXT</button>
+              </p>
+            </div>
+          </center>
+        </main>
+      );
+    } else if (step === "4") {
+      return (
+        <main>
+          <center>
+            <div className="">
+              <h2 className="pt-10 text-2xl font-bold text-white">
+                Finalizar
+              </h2>
+              <p className="mt-10">
+                <span className="text-lg">¡Gracias por participar!</span> <br />
+                <br />
+                En breve recibirás un email con el código QR para poder acceder al evento.
+                <br />
+                <br />
+                <button className="mt-10 btn btn-primary w-80" onClick={() => handleRegister()}>Finalizar</button>
               </p>
             </div>
           </center>

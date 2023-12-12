@@ -34,7 +34,8 @@ const page = ({ params }) => {
   }, []);
 
   useEffect(() => {
-    handleEventData();
+    // redirect directly to event registration page.
+    window.location.href = `https://laligadelamusica42.vercel.app/events/register/${params.id}?step=1`
   }, []);
 
   return (
