@@ -97,7 +97,7 @@ const handleRegister = async () => {
   }
   console.log("data:", data);
   try {
-    const response = await axios.post('/api/events/assistants', data);
+    const response = await axios.post('/api/events/assistants', JSON.stringify(data));
     if (response.status === 200) {
       console.log("response:", response);
       if (user || skills) {
