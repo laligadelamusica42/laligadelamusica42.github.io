@@ -89,10 +89,10 @@ const handleRegister = async () => {
   const userId = uuidv4().toString();
   let formdata = {
     "id": userId,
-    "eventId": eventId,
     "fullname": `${user?.name} ${user?.lastname}`,
-    "intra": user?.intra,
+    "eventId": eventId,
     "email": user?.email,
+    "intraname": user?.intra,
     "skills": skills?.skills
   }
   console.log("data:", formdata);
