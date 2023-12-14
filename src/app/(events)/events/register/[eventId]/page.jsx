@@ -87,7 +87,7 @@ const handleRegister = async () => {
   if (!user || !skills) return Promise.reject("No user or skills found");
   const eventId = params?.eventId;
   const userId = uuidv4().toString();
-  const data = {
+  const formdata = {
     "id": userId,
     "fullname": `${user?.name} ${user?.lastname}`,
     "email": user?.email,
@@ -95,9 +95,9 @@ const handleRegister = async () => {
     "skills": skills?.skills,
     "eventId": eventId
   }
-  console.log("data:", data);
+  console.log("data:", formdata);
   try {
-    const response = await axios.post('/api/events/assistants', JSON.stringify(data));
+    const response = await axios.post('/api/events/assistants', formdata);
     if (response.status === 200) {
       console.log("response:", response);
       if (user || skills) {
