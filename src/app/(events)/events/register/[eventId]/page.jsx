@@ -90,7 +90,7 @@ const handleRegister = async () => {
   let formdata = {
     "id": userId,
     "eventId": eventId,
-    "fullname": `${user?.firstame} ${user?.lastname}`,
+    "fullname": `${user?.name} ${user?.lastname}`,
     "intra": user?.intra,
     "email": user?.email,
     "skills": skills?.skills
