@@ -7,10 +7,12 @@ const connectDB = () => {
 
     // Managing Connections
     if (mongoose.connection) {
-    mongoose.connection.on("error", () => {
+    mongoose.connection.on("error", (error) => {
         console.log(
-        "MongoDB connection error. Please make sure MongoDB is running."
+        "MongoDB connection error. Please make sure MongoDB is running.",
+        error
         );
+        // Show error message in console
         process.exit();
     });
     mongoose.connection.on("connected", () => {

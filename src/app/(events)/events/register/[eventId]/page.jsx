@@ -84,20 +84,20 @@ const handleRegister = async () => {
 
   const user = JSON.parse(localStorage.getItem('user'));
   const skills = JSON.parse(localStorage.getItem('skills'));
-  if (!user || !skills) return Promise.reject("No user or skills found");
+  if (!user) return Promise.reject("No user or skills found");
   const eventId = params?.eventId;
   const userId = uuidv4().toString();
   let formdata = {
     "id": userId,
     "fullname": `${user?.name} ${user?.lastname}`,
-    "eventId": eventId,
     "email": user?.email,
     "intraname": user?.intra,
-    "skills": skills?.skills
+    "skills": skills?.skills,
+    "eventId": eventId
   }
   console.log("data:", formdata);
   try {
-    const response = await axios.post('/api/events/assistants', formdata, { headers: { 'Content-Type': 'application/json' } });
+    const response = await axios.post('/api/events/assistants', formdata);
     if (response.status === 200) {
       console.log("response:", response);
       if (user || skills) {
