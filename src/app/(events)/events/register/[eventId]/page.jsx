@@ -93,7 +93,7 @@ const handleRegister = async () => {
     "email": user?.email,
     "intraname": user?.intra,
     "skills": skills?.skills,
-    eventId
+    "eventId": eventId
   }
   console.log("data:", data);
   try {
