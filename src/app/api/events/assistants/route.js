@@ -13,14 +13,9 @@ export async function GET() {
 }
 
 export async function POST(request) {
-    console.log(request.body)
     try {
         await connectDB();
-        let data = '';
-        for await (const chunk of request.body) {
-            data += chunk;
-        }
-        data = JSON.parse(data);
+        const data = request.body; // Access the parsed body directly
         const newAssistant = new Assistant(data);
         await newAssistant.save();
         return NextResponse.json(newAssistant, { status: 200 });
