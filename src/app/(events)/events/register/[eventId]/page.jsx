@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React, { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -77,40 +77,44 @@ const page = ({ params }) => {
     }
   }
 
-  const handleRegister = async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const skills = JSON.parse(localStorage.getItem('skills'));
-    if (!user || !skills) return Promise.reject("No user or skills found");
-    const eventId = params?.eventId;
-    const userId = uuidv4().toString();
-    const data = {
-      "id": userId,
-      "fullname": `${user?.name} ${user?.lastname}`,
-      "email": user?.email,
-      "intraname": user?.intra,
-      "skills": skills?.skills,
-      eventId
-    }
-    console.log("data:", data);
-    try {
-      const response = await axios.post('/api/events/assistants', data);
-      if (response.status === 200) {
-        console.log("response:", response);
-        if (user || skills) {
-          localStorage.removeItem('user');
-          localStorage.removeItem('skills');
-          // Append user id
-          localStorage.setItem('userId', userId);
-          const uId = localStorage.getItem('userId');
-          // Send email
-          sendMail(uId);
-        }
-
-      }
-    } catch (error) {
-      console.log("error:", error); 
-    }
+const handleRegister = async () => {
+  if (typeof window === 'undefined') {
+    return Promise.reject("localStorage is not available");
   }
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const skills = JSON.parse(localStorage.getItem('skills'));
+  if (!user || !skills) return Promise.reject("No user or skills found");
+  const eventId = params?.eventId;
+  const userId = uuidv4().toString();
+  const data = {
+    "id": userId,
+    "fullname": `${user?.name} ${user?.lastname}`,
+    "email": user?.email,
+    "intraname": user?.intra,
+    "skills": skills?.skills,
+    eventId
+  }
+  console.log("data:", data);
+  try {
+    const response = await axios.post('/api/events/assistants', data);
+    if (response.status === 200) {
+      console.log("response:", response);
+      if (user || skills) {
+        localStorage.removeItem('user');
+        localStorage.removeItem('skills');
+        // Append user id
+        localStorage.setItem('userId', userId);
+        const uId = localStorage.getItem('userId');
+        // Send email
+        sendMail(uId);
+      }
+    }
+  } catch (error) {
+    console.log("error:", error);
+    return Promise.reject(error);
+  }
+}
 
   const getStepStyle = (currentStep, elementStep) => {
     return parseInt(currentStep) >= elementStep ? "step-primary" : "";
