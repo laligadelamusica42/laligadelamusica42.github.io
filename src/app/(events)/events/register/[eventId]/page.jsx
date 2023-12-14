@@ -87,13 +87,14 @@ const handleRegister = async () => {
   if (!user || !skills) return Promise.reject("No user or skills found");
   const eventId = params?.eventId;
   const userId = uuidv4().toString();
-  const formdata = {
+  let formdata = {
     "id": userId,
-    "fullname": `${user?.name} ${user?.lastname}`,
+    "eventId": eventId,
+    "name": user?.name,
+    "lastname": user?.lastname,
+    "intra": user?.intra,
     "email": user?.email,
-    "intraname": user?.intra,
-    "skills": skills?.skills,
-    "eventId": eventId
+    "skills": skills?.skills
   }
   console.log("data:", formdata);
   try {
