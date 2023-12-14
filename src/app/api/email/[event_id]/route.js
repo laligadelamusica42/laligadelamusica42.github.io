@@ -8,7 +8,7 @@ export async function POST(request) {
     const reqData = await request?.json(); // Use .json() to extract the data
     try {
         const data = await resend.emails.send({
-            from: 'La Liga de la Musica <idimnovdie1602@protonmail.com>',
+            from: 'La Liga de la Musica <no-reply@laligadelamusica42.tech>',
             to: reqData?.to, // Removed the array
             subject: 'Bienvenido al evento - La Liga de la Musica',
             text: reqData?.text
