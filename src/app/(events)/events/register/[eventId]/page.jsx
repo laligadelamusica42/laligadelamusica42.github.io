@@ -90,8 +90,7 @@ const handleRegister = async () => {
   let formdata = {
     "id": userId,
     "eventId": eventId,
-    "name": user?.name,
-    "lastname": user?.lastname,
+    "fullname": `${user?.firstame} ${user?.lastname}`,
     "intra": user?.intra,
     "email": user?.email,
     "skills": skills?.skills
@@ -112,7 +111,7 @@ const handleRegister = async () => {
       }
     }
   } catch (error) {
-    console.log("error:", error);
+    console.log("error:", error?.response?.data);
     return Promise.reject(error);
   }
 }
