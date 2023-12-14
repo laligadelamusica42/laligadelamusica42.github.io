@@ -11,11 +11,15 @@ export async function GET() {
         return NextResponse.status(500).json({ error: error.message });
     }
 }
-
 export async function POST(request) {
     try {
         await connectDB();
-        const data = request.body; // Access the parsed body directly
+        let data = '';
+        for await (const chunk of request.body) {
+            data += chunk;
+        }
+        data = JSON.parse(data);
+        console.log(data); // Log the parsed data
         const newAssistant = new Assistant(data);
         await newAssistant.save();
         return NextResponse.json(newAssistant, { status: 200 });
