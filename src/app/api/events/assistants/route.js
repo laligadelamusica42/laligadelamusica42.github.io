@@ -19,7 +19,19 @@ export async function POST(request) {
         for await (const chunk of request.body) {
             data += chunk;
         }
-        const { id, fullname, email, intraname, skills, eventId } = data;
+        const { id, fullname, email, intraname, skills, eventId } = JSON.parse(data);
+        // Validate if the JSON data is valid
+        if (!id || !fullname || !email || !intraname || !skills || !eventId) {
+            return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+        }
+        // Validate if the assistant already exists
+        const assistantExists = await Assistant.findOne({ id });
+        if (assistantExists) {
+            return NextResponse.json({ error: 'Assistant already exists' }, { status: 400 });
+        }
+        // Create the assistant
+        console.log(id, fullname, email, intraname, skills, eventId);
+        // Create the assistant
         const assistant = new Assistant({
             "id": id,
             "fullname": fullname,
