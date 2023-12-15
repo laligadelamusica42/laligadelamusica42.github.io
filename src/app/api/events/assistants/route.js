@@ -15,22 +15,17 @@ export async function GET() {
 export async function POST(request) {
     try {
         await connectDB();
-        let data = '';
-        for await (const chunk of request.body) {
-            data += chunk;
-        }
-        try {
-            data = JSON.parse(data);
-        } catch (error) {
-            console.log(data); // Log the parsed data
-            console.error('Stack Trace:', error.stack); // Log the error stack trace
-            console.error('Error parsing JSON:', error);
-            return NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 });
-        }
-        console.log(data); // Log the parsed data
-        const newAssistant = new Assistant(data);
-        await newAssistant.save();
-        return NextResponse.json(newAssistant, { status: 200 });
+        const { id, fullname, email, intraname, skills, eventId } = await request.body.json();
+        const assistant = new Assistant({
+            id,
+            fullname,
+            email,
+            intraname,
+            skills,
+            eventId
+        });
+        await assistant.save();
+        return NextResponse.json(assistant);
     } catch (error) {
         console.error('Error:', error); // Log the error for debugging
         console.error('Stack Trace:', error.stack); // Log the error stack trace
