@@ -19,7 +19,7 @@ export async function POST(request) {
         for await (const chunk of request.body) {
             data += chunk;
         }
-        const { id, fullname, email, intraname, skills, eventId } = JSON.parse(data);
+        const { id, fullname, email, intraname, skills, eventId } = data;
         const assistant = new Assistant({
             "id": id,
             "fullname": fullname,
