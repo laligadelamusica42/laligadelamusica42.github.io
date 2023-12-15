@@ -124,7 +124,7 @@ const page = ({ params }) => {
     // Send the data to the API
     try {
       // Refactor using fetch api
-      const response = await fetch(`/api/events/register/${params?.eventId}`, {
+      const response = await fetch(`/api/events/assistants`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
