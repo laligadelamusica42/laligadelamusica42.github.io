@@ -99,8 +99,8 @@ const page = ({ params }) => {
 
     // Version: 2.0
     // Get the user data
-    const userData = localStorage.getItem('user');
-    const skillsData = localStorage.getItem('skills');
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const skillsData = JSON.parse(localStorage.getItem('skills'));
     console.log("userData:", userData); //DEBUG: Check if parsing is working
     console.log("skillsData:", skillsData); //DEBUG: Check if parsing is working
     const registerData = {
