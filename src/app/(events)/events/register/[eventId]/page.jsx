@@ -130,7 +130,7 @@ const page = ({ params }) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(registerData)
-      })
+      }).then(res => res.json()).catch(err => console.error(err));
       if (response.status === 200) {
         // Send the email
         const uId = response.data?.id;
