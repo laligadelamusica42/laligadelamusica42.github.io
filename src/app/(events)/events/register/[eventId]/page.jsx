@@ -123,7 +123,14 @@ const page = ({ params }) => {
     }
     // Send the data to the API
     try {
-      const response = await axios.post(`/api/events/assistants`, JSON.stringify(registerData));
+      // Refactor using fetch api
+      const response = await fetch(`/api/events/register/${params?.eventId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(registerData)
+      })
       if (response.status === 200) {
         // Send the email
         const uId = response.data?.id;
