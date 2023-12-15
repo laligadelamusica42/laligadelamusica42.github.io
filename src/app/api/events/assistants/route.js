@@ -15,7 +15,7 @@ export async function GET() {
 export async function POST(request) {
     try {
         await connectDB();
-        const { id, fullname, email, intraname, skills, eventId } = await request.body.json();
+        const { id, fullname, email, intraname, skills, eventId } = await request.body;
         const assistant = new Assistant({
             id,
             fullname,
