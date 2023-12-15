@@ -21,12 +21,12 @@ export async function POST(request) {
         }
         const { id, fullname, email, intraname, skills, eventId } = JSON.parse(data);
         const assistant = new Assistant({
-            id,
-            fullname,
-            email,
-            intraname,
-            skills,
-            eventId
+            "id": id,
+            "fullname": fullname,
+            "email": email,
+            "intraname": intraname,
+            "skills": skills,
+            "eventId": eventId
         });
         await assistant.save();
         return NextResponse.json(assistant);
