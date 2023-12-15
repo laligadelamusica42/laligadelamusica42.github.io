@@ -15,14 +15,18 @@ export async function GET() {
 export async function POST(request) {
     try {
         await connectDB();
-        const { id, fullname, email, intraname, skills, eventId } = await request.body;
+        let data = '';
+        for await (const chunk of request.body) {
+            data += chunk;
+        }
+        const { id, fullname, email, intraname, skills, eventId } = JSON.parse(data);
         const assistant = new Assistant({
-            id: id,
-            fullname: fullname,
-            email: email,
-            intraname: intraname,
-            skills: skills,
-            eventId: eventId
+            id,
+            fullname,
+            email,
+            intraname,
+            skills,
+            eventId
         });
         await assistant.save();
         return NextResponse.json(assistant);
