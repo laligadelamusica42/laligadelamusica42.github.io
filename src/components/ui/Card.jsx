@@ -2,7 +2,7 @@
 import React from "react";
 
 const Card = ({ image_src, event_name, event_desc, event_url }) => {
-  const uId = localStorage.getItem('userId');
+  const uId = localStorage.getItem('uId');
   const handleCardClick = (event_url) => {
     window.location.href = event_url;
   }

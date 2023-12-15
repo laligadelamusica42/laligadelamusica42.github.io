@@ -1,16 +1,28 @@
-'use client'
-import React, { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
+'use client' // For Vercel
+import React, { useEffect } from "react"; // For using React
+import { useSearchParams } from "next/navigation"; // For getting the params
+import { useRouter } from "next/navigation"; // For navigation
+import axios from 'axios'; // For making the request to the API
+import { v4 as uuidv4 } from 'uuid'; // For generating the user id
+import Joi from 'joi'; // For validating the data
 
 const page = ({ params }) => {
-  const sParams = useSearchParams();
-  const router = useRouter();
-  const [selectedOption, setSelectedOption] = React.useState('0');
-  const [step, setStep] = React.useState(1);
+  const sParams = useSearchParams(); // Get the params
+  const router = useRouter(); // Get the router
+  const [selectedOption, setSelectedOption] = React.useState('0'); // For the select
+  const [step, setStep] = React.useState(1); // For the steps
 
+  // Schema of the JSON
+  const schema = Joi.object().keys({
+    id: Joi.string().error(new Error('id is not valid')),
+    eventId: Joi.string().error(new Error('eventId is not valid')),
+    fullname: Joi.string().error(new Error('fullname is not valid')),
+    intraname: Joi.string().error(new Error('intra is not valid')),
+    email: Joi.string().error(new Error('email is not valid')),
+    skills: Joi.string().error(new Error('skills is not valid'))
+  });
+
+  // For the steps
   const changePage = () => {
     const step = parseInt(sParams.get("step")) || 0;
     const id = params.eventId;
@@ -22,6 +34,7 @@ const page = ({ params }) => {
     }, 100);
   }
 
+  // For the submit
   const handleSubmit = (event) => {
     event.preventDefault();
     const formElements = event.target.elements;
@@ -52,6 +65,7 @@ const page = ({ params }) => {
     changePage();
   }
 
+  // For sending the email
   const sendMail = async (uId) => {
     if (!uId || uId === '') return Promise.reject("No user id found");
     // Get the assistan data by the uId
@@ -77,66 +91,66 @@ const page = ({ params }) => {
     }
   }
 
-const handleRegister = async () => {
-  if (typeof window === 'undefined') {
-    return Promise.reject("localStorage is not available");
-  }
+  // For registering the user
+  const handleRegister = async () => {
+    if (typeof window === 'undefined') {
+      return Promise.reject("localStorage is not available");
+    }
 
-  const user = JSON.parse(localStorage.getItem('user'));
-  const skills = JSON.parse(localStorage.getItem('skills'));
-  if (!user) return Promise.reject("No user or skills found");
-  const eventId = params?.eventId;
-  const userId = uuidv4().toString();
-  try {
-    const response = await axios.post('/api/events/assistants', {
-    id: userId.toString(),
-    fullname: user?.name + ' ' + user?.lastname,
-    email: user?.email,
-    intraname: user?.intra,
-    skills: skills?.skills || "NONE",
-    eventId: eventId
-    })
-    .then(function (response) {
-        console.log(response);
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
-    if (response.status === 200) {
-      console.log("response:", response);
-      if (user || skills) {
+    // Version: 2.0
+    // Get the user data
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const skillsData = JSON.parse(localStorage.getItem('skills'));
+    console.log("userData:", userData); //DEBUG: Check if parsing is working
+    console.log("skillsData:", skillsData); //DEBUG: Check if parsing is working
+    const registerData = {
+      "id": uuidv4(),
+      "eventId": params?.eventId,
+      "fullname": userData?.name + ' ' + userData?.lastname,
+      "intraname": userData?.intra,
+      "email": userData?.email,
+      "skills": skillsData?.skills || ''
+    }
+    console.log("registerData:", registerData); //DEBUG: Just to check if it's working
+    // Check if the JSON is valid
+    if (!registerData || registerData === '') {
+      return Promise.reject("No data found");
+    }
+    // Using JOI library to validate the data
+    const { error } = schema.validate(registerData);
+    if (error) {
+      return Promise.reject(error);
+    }
+    // Send the data to the API
+    try {
+      const response = await axios.post(`/api/events/assistants`, registerData);
+      if (response.status === 200) {
+        // Send the email
+        const uId = response.data?.id;
+        // Save the uId to localStorage
+        localStorage.setItem('uId', uId);
+        // Remove the data from localStorage
         localStorage.removeItem('user');
         localStorage.removeItem('skills');
-        // Append user id
-        localStorage.setItem('userId', userId);
-        const uId = localStorage.getItem('userId');
-        // Send email
-        sendMail(uId);
+        // Send the email
+        await sendMail(uId);
+        setTimeout(() => {
+          router.push('/events');
+        }, 100);
       }
+      return Promise.resolve(response);
+    } catch (error) {
+      console.error("error:", error?.response?.data?.message);
+      return Promise.reject(error);
     }
-  } catch (error) {
-    console.log("error:", error?.response?.data);
-    return Promise.reject(error);
   }
-}
 
+  // For the steps
   const getStepStyle = (currentStep, elementStep) => {
     return parseInt(currentStep) >= elementStep ? "step-primary" : "";
   }
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const skills = JSON.parse(localStorage.getItem('skills'));
-    // if (user && step === 1) {
-    //   router.push(`/events/register/${params.eventId}?step=2`);
-    //   setStep(2);
-    // }
-    //else if (skills && step === 2) {
-    //  router.push(`/events/register/${params.eventId}?step=3`);
-    //  setStep(3);
-    //}
-  }, []);
-
+  // For the steps
   const changeStep = (step, hSubmit) => {
     if (step === "1") {
       return (
@@ -299,6 +313,7 @@ const handleRegister = async () => {
     }
   }
 
+  // Main Body of the page
   return (
     <div className="w-full h-full">
       <header className="flex lg:justify-center md:justify-start">
