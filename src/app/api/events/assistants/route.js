@@ -4,13 +4,14 @@ import connectDB from '@/lib/connect';
 
 export async function GET() {
     try {
-        connectDB();
+        await connectDB(); // Add missing import statement for connectDB function
         const assistants = await Assistant.find({});
         return NextResponse.json(assistants);
     } catch (error) {
         return NextResponse.status(500).json({ error: error.message });
     }
 }
+
 export async function POST(request) {
     try {
         await connectDB();
@@ -18,7 +19,12 @@ export async function POST(request) {
         for await (const chunk of request.body) {
             data += chunk;
         }
-        data = JSON.parse(data);
+        try {
+            data = JSON.parse(data);
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+            return NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 });
+        }
         console.log(data); // Log the parsed data
         const newAssistant = new Assistant(data);
         await newAssistant.save();
