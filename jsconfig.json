@@ -3,7 +3,5 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "jsx": "react",
-    "target": "ES6"
   }
 }
