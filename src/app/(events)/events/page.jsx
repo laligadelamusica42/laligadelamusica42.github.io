@@ -28,7 +28,7 @@ const Events = () => {
 
   useEffect(() => {
     redirToVercel();
-    checkIfDev();
+    //checkIfDev();
   });
 
   // Call handleEventData when the component mounts
